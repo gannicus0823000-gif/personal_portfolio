@@ -40,6 +40,7 @@ interface BuildTimeGithubData {
 const applyProfileOverrides = (profile: Profile): Profile => ({
   ...profile,
   name: CONFIG.profile?.name || profile.name,
+  bio: CONFIG.profile?.bio || profile.bio,
 });
 
 const loadBuildTimeGithubData =

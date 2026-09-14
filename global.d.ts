@@ -316,6 +316,11 @@ interface ProfileConfig {
    * Display name override (falls back to GitHub profile name)
    */
   name?: string;
+
+  /**
+   * Bio override (falls back to GitHub profile bio)
+   */
+  bio?: string;
 }
 
 interface Config {

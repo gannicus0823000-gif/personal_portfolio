@@ -6,6 +6,7 @@ const CONFIG = {
   },
   profile: {
     name: '丁建 DING JIAN',
+    bio: '江南大学 本科',
   },
   base: '/personal_portfolio/', // 必须与仓库名一致
   projects: {
@@ -115,20 +116,7 @@ const CONFIG = {
       link: 'https://example.com',
     },
   ],
-  educations: [
-    {
-      institution: 'Institution Name',
-      degree: 'Degree',
-      from: '2015',
-      to: '2019',
-    },
-    {
-      institution: 'Institution Name',
-      degree: 'Degree',
-      from: '2012',
-      to: '2014',
-    },
-  ],
+  educations: [],
   publications: [],
   // Display articles from your medium or dev account. (Optional)
   blog: {
