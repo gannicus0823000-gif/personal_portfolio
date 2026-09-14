@@ -32,6 +32,32 @@ const GITHUB_API_BASE = import.meta.env.DEV
   ? '/api/github'
   : 'https://api.github.com';
 
+interface BuildTimeGithubData {
+  profile: Profile;
+  projects: GithubProject[];
+}
+
+const loadBuildTimeGithubData =
+  async (): Promise<BuildTimeGithubData | null> => {
+    if (!import.meta.env.PROD) {
+      return null;
+    }
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.BASE_URL}github-data.json`,
+      );
+
+      if (!response.ok) {
+        return null;
+      }
+
+      return (await response.json()) as BuildTimeGithubData;
+    } catch {
+      return null;
+    }
+  };
+
 /**
  * Formats the GitHub rate limit reset time for display.
  *
@@ -162,6 +188,17 @@ const GitProfileContent = ({
     try {
       setLoading(true);
       setError(null);
+
+      const buildTimeData = await loadBuildTimeGithubData();
+      if (buildTimeData) {
+        setProfile(buildTimeData.profile);
+
+        if (sanitizedConfig.projects.github.display) {
+          setGithubProjects(buildTimeData.projects);
+        }
+
+        return;
+      }
 
       const response = await axios.get(
         `${GITHUB_API_BASE}/users/${sanitizedConfig.github.username}`,
