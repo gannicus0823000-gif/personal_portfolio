@@ -10,7 +10,7 @@ const CONFIG = {
   base: '/personal_portfolio/', // 必须与仓库名一致
   projects: {
     github: {
-      display: true, // Display GitHub projects?
+      display: false, // Display GitHub projects?
       header: 'Github Projects',
       mode: 'automatic', // Mode can be: 'automatic' or 'manual'
       automatic: {
