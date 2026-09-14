@@ -311,11 +311,23 @@ interface ThemeConfig {
   themes?: Array<string>;
 }
 
+interface ProfileConfig {
+  /**
+   * Display name override (falls back to GitHub profile name)
+   */
+  name?: string;
+}
+
 interface Config {
   /**
    * GitHub config
    */
   github: Github;
+
+  /**
+   * Profile display overrides
+   */
+  profile?: ProfileConfig;
 
   /**
    * Vite's base url

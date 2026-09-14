@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../../i18n/use-language';
 import { SanitizedCertification } from '../../interfaces/sanitized-config';
 import { skeleton } from '../../utils';
 
@@ -35,6 +36,8 @@ const CertificationCard = ({
   certifications: SanitizedCertification[];
   loading: boolean;
 }) => {
+  const { t } = useLanguage();
+
   const renderSkeleton = () => {
     const array = [];
     for (let index = 0; index < 2; index++) {
@@ -67,7 +70,7 @@ const CertificationCard = ({
               skeleton({ widthCls: 'w-32', heightCls: 'h-8' })
             ) : (
               <span className="text-base-content opacity-70">
-                Certification
+                {t('certification')}
               </span>
             )}
           </h5>

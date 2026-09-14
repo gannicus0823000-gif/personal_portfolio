@@ -2,9 +2,12 @@
 
 const CONFIG = {
   github: {
-    username: 'gannicus0823000-gif',  // 你的 GitHub 用户名
+    username: 'gannicus0823000-gif', // 你的 GitHub 用户名
   },
-  base: '/personal_portfolio/',  // 必须与仓库名一致
+  profile: {
+    name: '丁建 DING JIAN',
+  },
+  base: '/personal_portfolio/', // 必须与仓库名一致
   projects: {
     github: {
       display: true, // Display GitHub projects?
@@ -46,32 +49,31 @@ const CONFIG = {
       ],
     },
   },
-  seo: { title: 'Portfolio of Ariful Alam', description: '', imageURL: '' },
+  seo: { title: '丁建 DING JIAN', description: '', imageURL: '' },
   social: {
-    linkedin: 'ariful-alam',
-    x: 'arif_szn',
-    mastodon: 'arifszn@mastodon.social',
+    linkedin: '',
+    x: '',
+    mastodon: '',
     researchGate: '',
     facebook: '',
     instagram: '',
     reddit: '',
     threads: '',
-    youtube: '', // example: 'pewdiepie'
+    youtube: '',
     udemy: '',
     dribbble: '',
     behance: '',
-    medium: 'arifszn',
-    dev: 'arifszn',
-    stackoverflow: '', // example: '1/jeff-atwood'
+    medium: '',
+    dev: '',
+    stackoverflow: '',
     discord: '',
     telegram: '',
-    website: 'https://www.arifszn.com',
+    website: '',
     phone: '',
-    email: '',
+    email: 'gannicus0823@163.com',
   },
   resume: {
-    fileUrl:
-      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // Empty fileUrl will hide the `Download Resume` button.
+    fileUrl: '', // Empty fileUrl will hide the `Download Resume` button.
   },
   skills: [
     'PHP',
@@ -150,7 +152,7 @@ const CONFIG = {
   // Display articles from your medium or dev account. (Optional)
   blog: {
     source: 'dev', // medium | dev
-    username: 'arifszn', // to hide blog section, keep it empty
+    username: '', // to hide blog section, keep it empty
     limit: 2, // How many articles to display. Max is 10.
   },
   googleAnalytics: {

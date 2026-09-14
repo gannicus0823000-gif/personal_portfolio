@@ -1,30 +1,25 @@
 import { RiDice4Line } from 'react-icons/ri';
+import { useLanguage } from '../../i18n/use-language';
 import { SanitizedThemeConfig } from '../../interfaces/sanitized-config';
 import { LOCAL_STORAGE_KEY_NAME } from '../../constants';
 import { skeleton } from '../../utils';
 import { MouseEvent } from 'react';
 
-/**
- * Renders a theme changer component.
- *
- * @param {Object} props - The props object.
- * @param {string} props.theme - The current theme.
- * @param {function} props.setTheme - A function to set the theme.
- * @param {boolean} props.loading - Whether the component is in a loading state.
- * @param {SanitizedThemeConfig} props.themeConfig - The theme configuration object.
- * @return {JSX.Element} The rendered theme changer component.
- */
 const ThemeChanger = ({
   theme,
   setTheme,
   loading,
   themeConfig,
+  variant = 'card',
 }: {
   theme: string;
   setTheme: (theme: string) => void;
   loading: boolean;
   themeConfig: SanitizedThemeConfig;
+  variant?: 'card' | 'toolbar';
 }) => {
+  const { t } = useLanguage();
+
   const changeTheme = (
     e: MouseEvent<HTMLAnchorElement>,
     selectedTheme: string,
@@ -40,6 +35,60 @@ const ThemeChanger = ({
     setTheme(selectedTheme);
   };
 
+  const themeLabel = theme === themeConfig.defaultTheme ? t('default') : theme;
+
+  const dropdown = (
+    <div title={t('changeTheme')} className="dropdown dropdown-end">
+      <div
+        tabIndex={0}
+        className={
+          variant === 'toolbar'
+            ? 'btn btn-ghost btn-sm gap-1 normal-case opacity-80 text-base-content'
+            : 'btn btn-ghost m-1 normal-case opacity-50 text-base-content flex items-center whitespace-nowrap'
+        }
+      >
+        {loading ? (
+          skeleton({ widthCls: 'w-10', heightCls: 'h-5' })
+        ) : (
+          <>
+            <RiDice4Line className="inline-block w-4 h-4 stroke-current" />
+            {variant === 'toolbar' && (
+              <span className="text-sm capitalize">{themeLabel}</span>
+            )}
+          </>
+        )}
+      </div>
+      <div
+        tabIndex={0}
+        className="dropdown-content z-50 mt-2 max-h-96 min-w-max overflow-y-auto rounded-lg bg-base-200 p-2 shadow-xl"
+      >
+        <ul className="menu menu-sm p-0">
+          {[
+            themeConfig.defaultTheme,
+            ...themeConfig.themes.filter(
+              (item) => item !== themeConfig.defaultTheme,
+            ),
+          ].map((item, index) => (
+            <li key={index}>
+              <a
+                onClick={(e) => changeTheme(e, item)}
+                className={`${theme === item ? 'active' : ''}`}
+              >
+                <span className="opacity-80 capitalize">
+                  {item === themeConfig.defaultTheme ? t('default') : item}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+
+  if (variant === 'toolbar') {
+    return dropdown;
+  }
+
   return (
     <div className="card overflow-visible shadow-lg card-sm bg-base-100">
       <div className="flex-row items-center space-x-4 flex pl-6 pr-2 py-4">
@@ -52,60 +101,16 @@ const ThemeChanger = ({
                 className: 'mb-1',
               })
             ) : (
-              <span className="text-base-content opacity-70">Theme</span>
+              <span className="text-base-content opacity-70">{t('theme')}</span>
             )}
           </h5>
           <span className="text-base-content/50 capitalize text-sm">
             {loading
               ? skeleton({ widthCls: 'w-16', heightCls: 'h-5' })
-              : theme === themeConfig.defaultTheme
-                ? 'Default'
-                : theme}
+              : themeLabel}
           </span>
         </div>
-        <div className="flex-0">
-          {loading ? (
-            skeleton({
-              widthCls: 'w-12',
-              heightCls: 'h-10',
-              className: 'mr-6',
-            })
-          ) : (
-            <div title="Change Theme" className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                className="btn btn-ghost m-1 normal-case opacity-50 text-base-content flex items-center whitespace-nowrap"
-              >
-                <RiDice4Line className="inline-block w-5 h-5 stroke-current" />
-              </div>
-              <div
-                tabIndex={0}
-                className="mt-16 overflow-y-auto shadow-2xl top-px dropdown-content max-h-96 min-w-max rounded-lg bg-base-200 text-base-content z-10"
-              >
-                <ul className="p-4 menu menu-sm">
-                  {[
-                    themeConfig.defaultTheme,
-                    ...themeConfig.themes.filter(
-                      (item) => item !== themeConfig.defaultTheme,
-                    ),
-                  ].map((item, index) => (
-                    <li key={index}>
-                      {}
-                      <a
-                        onClick={(e) => changeTheme(e, item)}
-                        className={`${theme === item ? 'active' : ''}`}
-                      >
-                        <span className="opacity-60 capitalize">
-                          {item === themeConfig.defaultTheme ? 'Default' : item}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
+        <div className="flex-0">{dropdown}</div>
       </div>
     </div>
   );

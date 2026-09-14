@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import LazyImage from '../lazy-image';
 import { MdOpenInNew } from 'react-icons/md';
+import { useLanguage } from '../../i18n/use-language';
 import { ga, skeleton } from '../../utils';
 import { SanitizedExternalProject } from '../../interfaces/sanitized-config';
 
@@ -15,6 +16,8 @@ const ExternalProjectCard = ({
   loading: boolean;
   googleAnalyticId?: string;
 }) => {
+  const { t } = useLanguage();
+
   const renderSkeleton = () => {
     const array = [];
     for (let index = 0; index < externalProjects.length; index++) {
@@ -151,7 +154,9 @@ const ExternalProjectCard = ({
                   <div className="text-base-content/60 text-xs sm:text-sm mt-1 truncate">
                     {loading
                       ? skeleton({ widthCls: 'w-32', heightCls: 'h-4' })
-                      : `Showcasing ${externalProjects.length} projects`}
+                      : t('showcasingProjects', {
+                          count: externalProjects.length,
+                        })}
                   </div>
                 </div>
               </div>

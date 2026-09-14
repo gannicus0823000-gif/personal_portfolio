@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { AiOutlineFork, AiOutlineStar, AiOutlineGithub } from 'react-icons/ai';
 import { MdInsertLink } from 'react-icons/md';
+import { useLanguage } from '../../i18n/use-language';
 import { ga, getLanguageColor, skeleton } from '../../utils';
 import { GithubProject } from '../../interfaces/github-project';
 
@@ -17,6 +18,8 @@ const GithubProjectCard = ({
   limit: number;
   googleAnalyticsId?: string;
 }) => {
+  const { t } = useLanguage();
+
   if (!loading && githubProjects.length === 0) {
     return;
   }
@@ -157,7 +160,9 @@ const GithubProjectCard = ({
                   <div className="text-base-content/60 text-xs sm:text-sm mt-1 truncate">
                     {loading
                       ? skeleton({ widthCls: 'w-32', heightCls: 'h-4' })
-                      : `Showcasing ${githubProjects.length} featured repositories`}
+                      : t('showcasingRepos', {
+                          count: githubProjects.length,
+                        })}
                   </div>
                 </div>
               </div>

@@ -10,6 +10,10 @@ const githubUsername = configText.match(
   /github:\s*\{[^}]*username:\s*['"]([^'"]+)['"]/,
 )?.[1];
 
+const profileName = configText.match(
+  /profile:\s*\{[^}]*name:\s*['"]([^'"]+)['"]/,
+)?.[1];
+
 if (!githubUsername) {
   console.warn('fetch-github-data: could not read github.username, skipping');
   process.exit(0);
@@ -98,7 +102,7 @@ try {
   const output = {
     profile: {
       avatar: user.avatar_url,
-      name: user.name || ' ',
+      name: profileName || user.name || ' ',
       bio: user.bio || '',
       location: user.location || '',
       company: user.company || '',

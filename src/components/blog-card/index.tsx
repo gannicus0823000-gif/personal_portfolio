@@ -3,6 +3,8 @@ import LazyImage from '../lazy-image';
 import { PiNewspaper } from 'react-icons/pi';
 import { getDevPost, getMediumPost } from '@arifszn/blog-js';
 import { formatDistance } from 'date-fns';
+import { enUS, zhCN } from 'date-fns/locale';
+import { useLanguage } from '../../i18n/use-language';
 import { SanitizedBlog } from '../../interfaces/sanitized-config';
 import { ga, skeleton } from '../../utils';
 import { Article } from '../../interfaces/article';
@@ -16,6 +18,7 @@ const BlogCard = ({
   blog: SanitizedBlog;
   googleAnalyticsId?: string;
 }) => {
+  const { language, t } = useLanguage();
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -138,6 +141,7 @@ const BlogCard = ({
                     <p className="text-base-content opacity-50 text-xs">
                       {formatDistance(article.publishedAt, new Date(), {
                         addSuffix: true,
+                        locale: language === 'zh' ? zhCN : enUS,
                       })}
                     </p>
                     <p className="mt-3 text-base-content text-sm">
@@ -164,7 +168,7 @@ const BlogCard = ({
       <div className="text-center mb-6">
         <PiNewspaper className="mx-auto h-12 w-12 opacity-30" />
         <p className="mt-1 text-sm opacity-50 text-base-content">
-          No recent post
+          {t('noRecentPost')}
         </p>
       </div>
     );
@@ -191,12 +195,12 @@ const BlogCard = ({
                 <h3 className="text-base sm:text-lg font-bold text-base-content truncate">
                   {loading
                     ? skeleton({ widthCls: 'w-28', heightCls: 'h-8' })
-                    : 'My Articles'}
+                    : t('myArticles')}
                 </h3>
                 <div className="text-base-content/60 text-xs sm:text-sm mt-1 truncate">
                   {loading
                     ? skeleton({ widthCls: 'w-32', heightCls: 'h-4' })
-                    : 'Recent posts'}
+                    : t('recentPosts')}
                 </div>
               </div>
             </div>

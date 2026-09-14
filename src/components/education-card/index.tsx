@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../../i18n/use-language';
 import { SanitizedEducation } from '../../interfaces/sanitized-config';
 import { skeleton } from '../../utils';
 
@@ -29,6 +30,8 @@ const EducationCard = ({
   loading: boolean;
   educations: SanitizedEducation[];
 }) => {
+  const { t } = useLanguage();
+
   const renderSkeleton = () => {
     const array = [];
     for (let index = 0; index < 2; index++) {
@@ -60,7 +63,9 @@ const EducationCard = ({
             {loading ? (
               skeleton({ widthCls: 'w-32', heightCls: 'h-8' })
             ) : (
-              <span className="text-base-content opacity-70">Education</span>
+              <span className="text-base-content opacity-70">
+                {t('education')}
+              </span>
             )}
           </h5>
         </div>
