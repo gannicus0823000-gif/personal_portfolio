@@ -28,6 +28,10 @@ import BlogCard from './blog-card';
 import Footer from './footer';
 import PublicationCard from './publication-card';
 
+const GITHUB_API_BASE = import.meta.env.DEV
+  ? '/api/github'
+  : 'https://api.github.com';
+
 /**
  * Formats the GitHub rate limit reset time for display.
  *
@@ -95,7 +99,7 @@ const GitProfileContent = ({
             .join('');
 
         const query = `user:${sanitizedConfig.github.username}+fork:${!sanitizedConfig.projects.github.automatic.exclude.forks}${excludeRepo}`;
-        const url = `https://api.github.com/search/repositories?q=${query}&sort=${sanitizedConfig.projects.github.automatic.sortBy}&per_page=${sanitizedConfig.projects.github.automatic.limit}&type=Repositories`;
+        const url = `${GITHUB_API_BASE}/search/repositories?q=${query}&sort=${sanitizedConfig.projects.github.automatic.sortBy}&per_page=${sanitizedConfig.projects.github.automatic.limit}&type=Repositories`;
 
         const repoResponse = await axios.get(url, {
           headers: { 'Content-Type': 'application/vnd.github.v3+json' },
@@ -111,7 +115,7 @@ const GitProfileContent = ({
           .map((project) => `+repo:${project}`)
           .join('');
 
-        const url = `https://api.github.com/search/repositories?q=${repos}+fork:true&type=Repositories`;
+        const url = `${GITHUB_API_BASE}/search/repositories?q=${repos}+fork:true&type=Repositories`;
 
         const repoResponse = await axios.get(url, {
           headers: { 'Content-Type': 'application/vnd.github.v3+json' },
@@ -142,6 +146,7 @@ const GitProfileContent = ({
 
     switch (error.response?.status) {
       case 403:
+      case 429:
         setError(setTooManyRequestError(formatRateLimitReset(error)));
         break;
       case 404:
@@ -159,7 +164,7 @@ const GitProfileContent = ({
       setError(null);
 
       const response = await axios.get(
-        `https://api.github.com/users/${sanitizedConfig.github.username}`,
+        `${GITHUB_API_BASE}/users/${sanitizedConfig.github.username}`,
       );
       const data = response.data;
 

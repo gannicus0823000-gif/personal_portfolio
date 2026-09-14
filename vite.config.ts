@@ -1,11 +1,15 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import CONFIG from './gitprofile.config.ts';
 import { createHtmlPlugin } from 'vite-plugin-html';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  const githubToken = env.GITHUB_TOKEN;
+
+  return {
   base: CONFIG.base || '/',
   plugins: [
     react(),
@@ -55,4 +59,17 @@ export default defineConfig({
   define: {
     CONFIG: CONFIG,
   },
+  server: {
+    proxy: {
+      '/api/github': {
+        target: 'https://api.github.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/github/, ''),
+        ...(githubToken
+          ? { headers: { Authorization: `Bearer ${githubToken}` } }
+          : {}),
+      },
+    },
+  },
+};
 });
